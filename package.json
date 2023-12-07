@@ -1,0 +1,24 @@
+{
+  "name": "plotherm",
+  "version": "1.0.0",
+  "description": "University project to simplify the calculations of water thermodynamic tables. The main idea is to build up a SPA web and let the client use its own tables (for other substances).",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xomaxy/plotherm.git"
+  },
+  "keywords": [
+    "chemistry",
+    "thermo",
+    "webpage"
+  ],
+  "author": "xomaxy, kndy_king12",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xomaxy/plotherm/issues"
+  },
+  "homepage": "https://github.com/xomaxy/plotherm#readme"
+}

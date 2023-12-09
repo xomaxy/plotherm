@@ -2,6 +2,8 @@
 
 // cambios hechos por ángel
 
+/// Hay que aprender bien esto Angel para vernos bien pros
+
 ////  Esto interpola los datos ////
 function interpolacion(Dp, Dd, Da, Xa, Xp) {
   ///Dp Dato posterior 

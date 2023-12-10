@@ -3,6 +3,13 @@
 // cambios hechos por ángel
 
 /// Hay que aprender bien esto Angel para vernos bien pros
+//////// Cambio del 9/12/23 me gusta este sisrtema de versiones 
+////// Voy a poner aqui las instrucciones de Git para que no se olviden 
+/////// git add.  /// es para agregar los archivos al mensaje 
+/////// git commit -m "mensaje de que cambios hice" ////
+/////// git push https://github.com/xomaxy/plotherm ////// subir cambios al repo 
+/////// git pull /////// Jalar los cambios 
+
 
 ////  Esto interpola los datos ////
 function interpolacion(Dp, Dd, Da, Xa, Xp) {
@@ -219,6 +226,7 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
       return estado = "Dato por encima de la presion tabulada, se esta trabajando en eso. Por favor coloca un valor más pequeño" /////// Area Pendiente para extrapolar
     }
     if(presion < min_indice){
+
       return estado = "Dato por debajo de la presion tabulada, se esta trabajando en eso. Por favor coloca un valor más grande" /////// Area Pendiente para extrapolar
     }
     if (Indices_de_presiones[i] === presion) {

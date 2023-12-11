@@ -1,6 +1,6 @@
 valor = 10000
-valor_secundario = 1151.8
-caso_seleccionado = "PU"
+valor_secundario = 400
+caso_seleccionado = "PT"
 
 // Test github
 
@@ -107,13 +107,12 @@ function buscarEnColumna(columna, columna2, valorBuscado) {
 //////// Funcion para que cambie el array de la columnas segun cambie el caso ///////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function rotacion_de_valores_array(caso) {
-  if (caso === "TH" || caso === "TU" || caso === "TV" || caso === "TS" || caso === "TP") {
+  if (caso === "TH" || caso === "TU" || caso === "TV" || caso === "TS" ||  caso === "TX") {
       return "A4";
   }
-  if (caso === "PH" || caso === "PU" || caso === "PV" || caso === "PS" || caso === "TX" || caso === "PX") {
+  if (caso === "PH" || caso === "PU" || caso === "PV" || caso === "PS" ||  caso === "PX" || caso === "PT") {
       return "A5";
   }
-  
 } ///////// Hay que considerar tambien que se debe tomar en cuenta la calidad para determinar la tabla 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -246,14 +245,26 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
   let estado = -1
   max_indice = Math.max(...Indices_de_presiones)
   min_indice = Math.min(...Indices_de_presiones)
-  
-  for (let i = 0; i < Indices_de_presiones.length; i++) {
-    if(valor_secundario > HIGL || valor_secundario > UIGL || valor_secundario > SIGL || valor_secundario > VIGL){
+  if(caso_seleccionado != "PT"){
+  if(valor_secundario > HIGL || valor_secundario > UIGL || valor_secundario > SIGL || valor_secundario > VIGL){
+    Calidad = 1
+  }
+  if(valor_secundario < HILG ||  valor_secundario < UILG  || valor_secundario < SILG || valor_secundario < VILG){
+    Calidad = 0
+  }
+}
+  if(caso_seleccionado === "PT"){
+    if(valor_secundario > T){
       Calidad = 1
     }
-    if(valor_secundario < HILG ||  valor_secundario < UILG  || valor_secundario < SILG || valor_secundario < VILG){
+    if(valor_secundario < T){
       Calidad = 0
     }
+    
+  }
+
+  for (let i = 0; i < Indices_de_presiones.length; i++) {
+
 
     // Verificar si el valor actual coincide con el valor buscado
     if(presion > max_indice){
@@ -276,6 +287,7 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
         min = Math.min(...tabla_filtrada)
         max = Math.max(...tabla_filtrada)
         posicion_max = tabla_filtrada.indexOf(max)
+
 
         if(valor_secundario > max && valor_secundario > min){
           V = extrapolacion(valor_secundario,tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max],
@@ -308,7 +320,10 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
         min = Math.min(...tabla_filtrada)
         max = Math.max(...tabla_filtrada)
         posicion_max = tabla_filtrada.indexOf(max)
-        if(valor_secundario > max && valor_secundario > min){
+        if(valor_secundario > max && valor_secundario > min && valor_secundario < VILG){
+          estado = "no se puede extrapolar por encima del valor maximo de la tempertura de saturacion"
+        }
+        if(valor_secundario > max && valor_secundario > min && valor_secundario > VIGL){
           T = extrapolacion(valor_secundario,tabla_de_interes[1][posicion_max-1],tabla_de_interes[1][posicion_max],
             tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max])
           U = extrapolacion(valor_secundario,tabla_de_interes[1][posicion_max-1],tabla_de_interes[1][posicion_max],
@@ -339,7 +354,10 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
         min = Math.min(...tabla_filtrada)
         max = Math.max(...tabla_filtrada)
         posicion_max = tabla_filtrada.indexOf(max)
-        if(valor_secundario > max && valor_secundario > min){
+        if(valor_secundario > max && valor_secundario > min && valor_secundario < UILG){
+          estado = "no se puede extrapolar por encima del valor maximo de la tempertura de saturacion"
+        }
+        if(valor_secundario > max && valor_secundario > min && valor_secundario > UIGL){
           T = extrapolacion(valor_secundario,tabla_de_interes[2][posicion_max-1],tabla_de_interes[2][posicion_max],
             tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max])
           V = extrapolacion(valor_secundario,tabla_de_interes[2][posicion_max-1],tabla_de_interes[2][posicion_max],
@@ -371,7 +389,10 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
         min = Math.min(...tabla_filtrada)
         max = Math.max(...tabla_filtrada)
         posicion_max = tabla_filtrada.indexOf(max)
-        if(valor_secundario > max && valor_secundario > min){
+        if(valor_secundario > max && valor_secundario > min && valor_secundario < HILG){
+          estado = "no se puede extrapolar por encima del valor maximo de la tempertura de saturacion"
+        }
+        if(valor_secundario > max && valor_secundario > min && valor_secundario > HIGL){
           T = extrapolacion(valor_secundario,tabla_de_interes[3][posicion_max-1],tabla_de_interes[3][posicion_max],
             tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max])
           V = extrapolacion(valor_secundario,tabla_de_interes[3][posicion_max-1],tabla_de_interes[3][posicion_max],
@@ -403,7 +424,10 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
         min = Math.min(...tabla_filtrada)
         max = Math.max(...tabla_filtrada)
         posicion_max = tabla_filtrada.indexOf(max)
-        if(valor_secundario > max && valor_secundario > min){
+        if(valor_secundario > max && valor_secundario > min && valor_secundario < SILG){
+          estado = "no se puede extrapolar por encima del valor maximo de la tempertura de saturacion"
+        }
+        if(valor_secundario > max && valor_secundario > min && valor_secundario > SIGL){
           T = extrapolacion(valor_secundario,tabla_de_interes[4][posicion_max-1],tabla_de_interes[4][posicion_max],
             tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max])
           V = extrapolacion(valor_secundario,tabla_de_interes[4][posicion_max-1],tabla_de_interes[4][posicion_max],
@@ -478,6 +502,7 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
       posicion_max_posterior_H_p = H_p.indexOf(max_H_p)
       posicion_max_anterior_S_a = S_a.indexOf(max_S_a)
       posicion_max_posterior_S_p = S_p.indexOf(max_S_p)
+
     if (Indices_de_presiones[i] < presion && Indices_de_presiones[i + 1] > presion){
      if(caso_seleccionado === "PT"){
       if(valor_secundario > max_T_p && valor_secundario > min_T_p){
@@ -514,7 +539,6 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
     return estado
   }
     if(caso_seleccionado === "PV"){
-      console.log("QE")
     if(valor_secundario > max_V_p && valor_secundario > min_V_p){
       consp
       T = interpolacion(Indices_de_presiones[i+1],presion,Indices_de_presiones[i],
@@ -685,8 +709,10 @@ return estado
 //////////////////////////////////////////// valor_secundario, caso seleccionado        //////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-casos_posibles = ["TH","TU","TV","TS","PH","PU","PV","PS","TX","PX","TP","THEVAP","TUEVAP","TSEVAP","PHEVAP","PUEVAP","SEVAP","TX","PX"]
+casos_posibles = ["TH","TU","TV","TS","PH","PU","PV","PS","TX","PX","PT","THEVAP","TUEVAP","TSEVAP","PHEVAP","PUEVAP","SEVAP","TX","PX"]
                        //////////// Casos de Evap pendientes 
+let P = buscarEnColumna(Columna_1,Columna_2, valor);
+let T = buscarEnColumna(Columna_1,Columna_2,valor);
 let HILG = buscarEnColumna(Columna_1,Columna_HILG,valor);
 let HIGL = buscarEnColumna(Columna_1,Columna_HIGL,valor);
 let UILG = buscarEnColumna(Columna_1,Columna_UILG,valor);
@@ -791,6 +817,28 @@ function estado_intracampana(valor,valor_secundario,caso_seleccionado){
       Densidad = (1/V_result);
       estado = [T,P,Calidad_result,V_result,U_result,H_result,S_result,Densidad] //  T P C V U H S D
     }
+    if(caso_seleccionado === "TX"){
+      T = valor 
+      P = buscarEnColumna(Columna_1,Columna_2,valor)
+      Calidad_result = valor_secundario
+      H_result = M_intermedia(Calidad_result,HILG,HIGL);
+      U_result = M_intermedia(Calidad_result,UILG,UIGL);
+      V_result = M_intermedia(Calidad_result,VILG,VIGL);
+      S_result = M_intermedia(Calidad_result,SILG,SIGL);
+      Densidad = (1/V_result);
+      estado = [T,P,Calidad_result,V_result,U_result,H_result,S_result,Densidad]
+    }
+    if(caso_seleccionado === "PX"){
+      T = buscarEnColumna(Columna_1,Columna_2,valor)
+      P = valor
+      Calidad_result = valor_secundario
+      H_result = M_intermedia(Calidad_result,HILG,HIGL);
+      U_result = M_intermedia(Calidad_result,UILG,UIGL);
+      V_result = M_intermedia(Calidad_result,VILG,VIGL);
+      S_result = M_intermedia(Calidad_result,SILG,SIGL);
+      Densidad = (1/V_result);
+      estado = [T,P,Calidad_result,V_result,U_result,H_result,S_result,Densidad]
+    }
     return estado
 }
 //  T P V H U S D
@@ -846,8 +894,26 @@ function estado_final(caso_seleccionado,valor,valor_secundario){
       }
       return estado
     }
+    if(caso_seleccionado === "TX" || caso_seleccionado ===  "PX"){
+    estado = estado_intracampana(valor,valor_secundario,caso_seleccionado)
+    }
+    if(caso_seleccionado === "PT"){
+      if(valor_secundario > T){
+        estado = buscar_tablita(valor,Indices_de_presiones_tabla_A_6,valor_secundario,caso_seleccionado,familias_A6)
+      }
+      if(valor_secundario < T){
+        estado = buscar_tablita(valor,Indices_de_presiones_tabla_A_7,valor_secundario,caso_seleccionado,familias_A7)
+      }
+      suerte = buscarEnColumna(Columna_1,Columna_2,valor)
+      if(valor_secundario === suerte){
+        console.log("Le diste justo en la interface, suertudo. Debido a que te corresponden valor de las dos interfaces (ILG e IGL), esta indefinido")
+      }
+      return estado
+    }
     return estado
   }
+  
+
 
 estado_total = estado_final(caso_seleccionado,valor,valor_secundario)
 

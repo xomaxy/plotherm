@@ -1,14 +1,15 @@
 valor = 10000
-valor_secundario = 400
+valor_secundario = 1151.8
 caso_seleccionado = "PT"
 
 // Test github
+
 // cambios hechos por ángel
 
 /// Hay que aprender bien esto Angel para vernos bien pros
 //////// Cambio del 9/12/23 me gusta este sisrtema de versiones 
 ////// Voy a poner aqui las instrucciones de Git para que no se olviden 
-/////// git add .  /// es para agregar los archivos al mensaje 
+/////// git add.  /// es para agregar los archivos al mensaje 
 /////// git commit -m "mensaje de que cambios hice" ////
 /////// git push https://github.com/xomaxy/plotherm ////// subir cambios al repo 
 /////// git pull /////// Jalar los cambios 
@@ -307,6 +308,7 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
           S = buscarEnColumna(tabla_de_interes[0],tabla_de_interes[4],valor_secundario);
           Densidad = 1/V;
           estado = [valor_secundario,presion,Calidad,V,U,H,S,Densidad]
+          
         }
         if(valor_secundario < min) {
           estado = ["valor por debajo de la temperatura de saturacion:",min]
@@ -923,7 +925,7 @@ console.log("Volumen [m^3/kg]:",estado_total[3])
 console.log("Energía interna [kJ/kg]:",estado_total[4])
 console.log("Entalpía[kJ/kg]:",estado_total[5])
 console.log("Entropía [KJ/Kg*K]:",estado_total[6])
-console.log("Densida [kg/m^3]",estado_total[7])
+console.log("Densidad [kg/m^3]",estado_total[7])
 //console.log(...estado_total)
 console.log(caso_seleccionado)
 //  T P C V U H S D

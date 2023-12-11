@@ -223,10 +223,11 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
 
     // Verificar si el valor actual coincide con el valor buscado
     if(presion > max_indice){
+      V
       return estado = "Dato por encima de la presion tabulada, se esta trabajando en eso. Por favor coloca un valor más pequeño" /////// Area Pendiente para extrapolar
     }
     if(presion < min_indice){
-
+      
       return estado = "Dato por debajo de la presion tabulada, se esta trabajando en eso. Por favor coloca un valor más grande" /////// Area Pendiente para extrapolar
     }
     if (Indices_de_presiones[i] === presion) {
@@ -289,6 +290,7 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
         if(valor_secundario < min){
           estado = ["valor por debajo de la temperatura de saturacion:",min]
         }
+      return estado 
     }
       if(caso_seleccionado === "PU"){
         min = Math.min(...tabla_de_interes[2])
@@ -318,6 +320,7 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
         if(valor_secundario < min){
         estado = ["valor por debajo de la temperatura de saturacion:",min]
       }
+      return estado
     }
       if(caso_seleccionado === "PH"){
         min = Math.min(...tabla_de_interes[3])
@@ -347,6 +350,7 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
         if(valor_secundario < min){
         estado = ["valor por debajo de la temperatura de saturacion:",min]
       }
+      return estado
     }
       if(caso_seleccionado === "PS"){
         min = Math.min(...tabla_de_interes[4])
@@ -380,7 +384,6 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
     return estado;
     }
     
-    if (Indices_de_presiones[i] < presion && Indices_de_presiones[i + 1] > presion){
     presion_de_la_tabla_anterior = Indices_de_presiones[i];
     presion_de_la_tabla_posterior = Indices_de_presiones[i+1];
     tabla_posterior = familias[i+1]
@@ -427,8 +430,8 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
       posicion_max_posterior_H_p = H_p.indexOf(max_H_p)
       posicion_max_anterior_S_a = S_a.indexOf(max_S_a)
       posicion_max_posterior_S_p = S_p.indexOf(max_S_p)
-
-    if(caso_seleccionado === "PT"){
+    if (Indices_de_presiones[i] < presion && Indices_de_presiones[i + 1] > presion){
+     if(caso_seleccionado === "PT"){
       if(valor_secundario > max_T_p && valor_secundario > min_T_p){
         V = interpolacion(Indices_de_presiones[i+1],presion,Indices_de_presiones[i],
           extrapolacion(valor_secundario,T_a[posicion_max_anterior_T_a-1],max_T_a,V_a[posicion_max_anterior_V_a-1],max_V_a),

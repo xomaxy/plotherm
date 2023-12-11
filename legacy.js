@@ -1,6 +1,6 @@
 valor = 10000
-valor_secundario = 1151.8
-caso_seleccionado = "PT"
+valor_secundario = 3500
+caso_seleccionado = "PH"
 
 // Test github
 
@@ -907,7 +907,8 @@ function estado_final(caso_seleccionado,valor,valor_secundario){
       }
       suerte = buscarEnColumna(Columna_1,Columna_2,valor)
       if(valor_secundario === suerte){
-        console.log("Le diste justo en la interface, suertudo. Debido a que te corresponden valor de las dos interfaces (ILG e IGL), esta indefinido")
+        estado = ["¿Qué es la vida?","Una serie","interminable","de problemas","de termodinamica","que no tienen solucion", "hasta ahora,","que ha llegado Legacy"]
+        console.log("Le diste justo en la interface, suertudo. Debido a que corresponden valores de las dos interfaces (ILG e IGL), esta indefinido")
       }
       return estado
     }
@@ -926,14 +927,12 @@ console.log("Energía interna [kJ/kg]:",estado_total[4])
 console.log("Entalpía[kJ/kg]:",estado_total[5])
 console.log("Entropía [KJ/Kg*K]:",estado_total[6])
 console.log("Densidad [kg/m^3]",estado_total[7])
-//console.log(...estado_total)
 console.log(caso_seleccionado)
+
 //  T P C V U H S D
 
 let maximo = Math.max(...Columna_1)
 let minimo = Math.min(...Columna_1);
 console.log("Valor máximo de miColumna:", maximo);
 console.log("Valor mínimo de miColumna:", minimo);
-
-
-
+console.log(JSON.stringify(estado_total))

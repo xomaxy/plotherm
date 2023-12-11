@@ -1,3 +1,7 @@
+valor = 10000
+valor_secundario = 1151.8
+caso_seleccionado = "PU"
+
 // Test github
 
 // cambios hechos por ángel
@@ -9,7 +13,6 @@
 /////// git commit -m "mensaje de que cambios hice" ////
 /////// git push https://github.com/xomaxy/plotherm ////// subir cambios al repo 
 /////// git pull /////// Jalar los cambios 
-
 
 ////  Esto interpola los datos ////
 function interpolacion(Dp, Dd, Da, Xa, Xp) {
@@ -96,6 +99,8 @@ function buscarEnColumna(columna, columna2, valorBuscado) {
       );
       return resultadoInterpolacion;
     }
+    
+    
   }
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,15 +116,6 @@ function rotacion_de_valores_array(caso) {
   
 } ///////// Hay que considerar tambien que se debe tomar en cuenta la calidad para determinar la tabla 
 
-
-
-valor = 101
-valor_secundario = 3000
-caso_seleccionado = "PH"
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //// Extraer datos del excel para su manejo POR COLUMNAS de A4 y A5 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,10 +123,9 @@ const xlsx = require('xlsx');
 const fs = require('fs');
 const { match } = require('assert');
 const { CONNREFUSED } = require('dns');
-const { log } = require('console');
+const { log, Console } = require('console');
 
-let tabla_de_trabajo = "A4" //////////////// CORREGIR DEBE DEPENDER DE LA FUNCION rotacion_de_valores_array 
-
+let tabla_de_trabajo = rotacion_de_valores_array(caso_seleccionado) //////////////// CORREGIR DEBE DEPENDER DE LA FUNCION rotacion_de_valores_array 
 
 let rutaArchivo;
 if (tabla_de_trabajo === "A4") {
@@ -169,61 +164,103 @@ const Columna_UEVAP = matrizCeldas.map(fila => fila[11]);
 const Columna_SEVAP = matrizCeldas.map(fila => fila[12]);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//// Extraer datos del excel para su manejo POR FAMILIAS de la A6 /////////////////////////////////////////////////////////////////////////
+//// Extraer datos del excel para su manejo POR FAMILIAS de la A6 y A7 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-let tabla_de_trabajo_A6 = "A6" 
-rutaArchivo_A6 = 'C:\\Users\\adan_\\Desktop\\Software Termo\\A6.xlsx';
+    rutaArchivo_A6 = 'C:\\Users\\adan_\\Desktop\\Software Termo\\A6.xlsx';
+    
+    // Leer el contenido del archivo Excel
+    const contenidoArchivo_A6 = fs.readFileSync(rutaArchivo_A6);
 
-// Leer el contenido del archivo Excel
-const contenidoArchivo_A6 = fs.readFileSync(rutaArchivo_A6);
+    // Convertir el contenido a un objeto de libro de trabajo (workbook)
+    const libroDeTrabajo_A6 = xlsx.read(contenidoArchivo_A6, { type: 'buffer' });
 
-// Convertir el contenido a un objeto de libro de trabajo (workbook)
-const libroDeTrabajo_A6 = xlsx.read(contenidoArchivo_A6, { type: 'buffer' });
+    // Seleccionar la primera hoja del libro de trabajo
+    const nombreHoja_A6 = libroDeTrabajo_A6.SheetNames[0];
+    const hoja_A6 = libroDeTrabajo_A6.Sheets[nombreHoja];
 
-// Seleccionar la primera hoja del libro de trabajo
-const nombreHoja_A6 = libroDeTrabajo_A6.SheetNames[0];
-const hoja_A6 = libroDeTrabajo_A6.Sheets[nombreHoja];
+    // Obtener la matriz de celdas
+    const matrizCeldas_A6 = xlsx.utils.sheet_to_json(hoja_A6, { header: 1 });
 
-// Obtener la matriz de celdas
-const matrizCeldas_A6 = xlsx.utils.sheet_to_json(hoja_A6, { header: 1 });
+    // Encontrar la longitud máxima entre todas las filas
+    const longitudMaxima_A6 = matrizCeldas_A6.reduce((max, fila) => Math.max(max, fila.length), 0);
 
-// Encontrar la longitud máxima entre todas las filas
-const longitudMaxima = matrizCeldas_A6.reduce((max, fila) => Math.max(max, fila.length), 0);
+    // Definir el tamaño de las familias
+    const tamanoFamilia = 5;
 
-// Definir el tamaño de las familias
-const tamanoFamilia = 5;
+    // Dividir la matriz en familias de 5 columnas
+    const familias_A6 = [];
+    for (let i = 0; i < longitudMaxima_A6; i += tamanoFamilia) {
+      const familia = [];
+      for (let j = 0; j < tamanoFamilia; j++) {
+        const columna = matrizCeldas_A6.map(fila => fila[i + j]);
+        familia.push(columna);
+      }
+      familias_A6.push(familia);
+    }
 
-// Dividir la matriz en familias de 5 columnas
-const familias = [];
-for (let i = 0; i < longitudMaxima; i += tamanoFamilia) {
-  const familia = [];
-  for (let j = 0; j < tamanoFamilia; j++) {
-    const columna = matrizCeldas_A6.map(fila => fila[i + j]);
-    familia.push(columna);
-  }
-  familias.push(familia);
-}
+    rutaArchivo_A7 = 'C:\\Users\\adan_\\Desktop\\Software Termo\\A7.xlsx';
+
+    // Leer el contenido del archivo Excel
+    const contenidoArchivo_A7 = fs.readFileSync(rutaArchivo_A7);
+
+    // Convertir el contenido a un objeto de libro de trabajo (workbook)
+    const libroDeTrabajo_A7 = xlsx.read(contenidoArchivo_A7, { type: 'buffer' });
+
+    // Seleccionar la primera hoja del libro de trabajo
+    const nombreHoja_A7 = libroDeTrabajo_A7.SheetNames[0];
+    const hoja_A7 = libroDeTrabajo_A7.Sheets[nombreHoja];
+
+    // Obtener la matriz de celdas
+    const matrizCeldas_A7 = xlsx.utils.sheet_to_json(hoja_A7, { header: 1 });
+
+    // Encontrar la longitud máxima entre todas las filas
+    const longitudMaxima_A7 = matrizCeldas_A7.reduce((max, fila) => Math.max(max, fila.length), 0);
+
+    
+        // Dividir la matriz en familias de 5 columnas
+    const familias_A7 = [];
+    for (let i = 0; i < longitudMaxima_A7; i += tamanoFamilia) {
+      const familia = [];
+      for (let j = 0; j < tamanoFamilia; j++) {
+        const columna = matrizCeldas_A7.map(fila => fila[i + j]);
+        familia.push(columna);
+      }
+      familias_A7.push(familia);
+    }
+    
+
+
 const Indices_de_presiones_tabla_A_6 = [10, 50, 100, 200, 300, 400, 500, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2500, 3000, 3500, 4000, 4500,
 5000,6000, 7000, 8000, 9000, 10000, 12500, 15000, 17500, 20000, 25000, 30000, 35000, 40000, 50000, 60000]; /////Estas son las presiones de cada
   /// tabla (familia), de presiones de la A6
+const Indices_de_presiones_tabla_A_7 = [5000, 10000, 15000, 20000,30000, 50000]
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////Para las Fuera de campana, necesita la funcion de interpolacion doble DOLIOOOOOOOOOOO Pd. Ojala sirva 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,caso_seleccionado) {
+
+function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_seleccionado,familias) {
   // Iterar a través de los elementos de la columna
   let estado = -1
   max_indice = Math.max(...Indices_de_presiones)
   min_indice = Math.min(...Indices_de_presiones)
-    
+  
   for (let i = 0; i < Indices_de_presiones.length; i++) {
-    Calidad = 1
+    if(valor_secundario > HIGL || valor_secundario > UIGL || valor_secundario > SIGL || valor_secundario > VIGL){
+      Calidad = 1
+    }
+    if(valor_secundario < HILG ||  valor_secundario < UILG  || valor_secundario < SILG || valor_secundario < VILG){
+      Calidad = 0
+    }
 
     // Verificar si el valor actual coincide con el valor buscado
     if(presion > max_indice){
-      V
+      if(caso_seleccionado === "PV"){
+        V = extrapolacion(presion,Indices_de_presiones[i-1],Indices_de_presiones[i],buscarEnColumna(T_a,V_a,valor_secundario),
+        buscarEnColumna(T_p,V_p,valor_secundario))
+      }
       return estado = "Dato por encima de la presion tabulada, se esta trabajando en eso. Por favor coloca un valor más pequeño" /////// Area Pendiente para extrapolar
     }
     if(presion < min_indice){
@@ -231,12 +268,14 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
       return estado = "Dato por debajo de la presion tabulada, se esta trabajando en eso. Por favor coloca un valor más grande" /////// Area Pendiente para extrapolar
     }
     if (Indices_de_presiones[i] === presion) {
-       tabla_de_interes = familias[i]   
-
+       tabla_de_interes = familias[i] 
+       
       if(caso_seleccionado === "PT"){
-        min = Math.min(...tabla_de_interes[0])
-        max = Math.max(...tabla_de_interes[0])
-        posicion_max = tabla_de_interes[0].indexOf(max)
+        tabla = tabla_de_interes[0]
+        tabla_filtrada = tabla.filter(value => value !== undefined)
+        min = Math.min(...tabla_filtrada)
+        max = Math.max(...tabla_filtrada)
+        posicion_max = tabla_filtrada.indexOf(max)
 
         if(valor_secundario > max && valor_secundario > min){
           V = extrapolacion(valor_secundario,tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max],
@@ -264,9 +303,11 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
       return estado
     }
       if(caso_seleccionado === "PV"){
-        min = Math.min(...tabla_de_interes[1])
-        max = Math.max(...tabla_de_interes[1])
-        posicion_max = tabla_de_interes[1].indexOf(max)
+        tabla = tabla_de_interes[1]
+        tabla_filtrada = tabla.filter(value => value !== undefined)
+        min = Math.min(...tabla_filtrada)
+        max = Math.max(...tabla_filtrada)
+        posicion_max = tabla_filtrada.indexOf(max)
         if(valor_secundario > max && valor_secundario > min){
           T = extrapolacion(valor_secundario,tabla_de_interes[1][posicion_max-1],tabla_de_interes[1][posicion_max],
             tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max])
@@ -293,9 +334,11 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
       return estado 
     }
       if(caso_seleccionado === "PU"){
-        min = Math.min(...tabla_de_interes[2])
-        max = Math.max(...tabla_de_interes[2])
-        posicion_max = tabla_de_interes[2].indexOf(max)
+        tabla = tabla_de_interes[2]
+        tabla_filtrada = tabla.filter(value => value !== undefined)
+        min = Math.min(...tabla_filtrada)
+        max = Math.max(...tabla_filtrada)
+        posicion_max = tabla_filtrada.indexOf(max)
         if(valor_secundario > max && valor_secundario > min){
           T = extrapolacion(valor_secundario,tabla_de_interes[2][posicion_max-1],tabla_de_interes[2][posicion_max],
             tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max])
@@ -323,9 +366,11 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
       return estado
     }
       if(caso_seleccionado === "PH"){
-        min = Math.min(...tabla_de_interes[3])
-        max = Math.max(...tabla_de_interes[3])
-        posicion_max = tabla_de_interes[3].indexOf(max)
+        tabla = tabla_de_interes[3]
+        tabla_filtrada = tabla.filter(value => value !== undefined)
+        min = Math.min(...tabla_filtrada)
+        max = Math.max(...tabla_filtrada)
+        posicion_max = tabla_filtrada.indexOf(max)
         if(valor_secundario > max && valor_secundario > min){
           T = extrapolacion(valor_secundario,tabla_de_interes[3][posicion_max-1],tabla_de_interes[3][posicion_max],
             tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max])
@@ -353,9 +398,11 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
       return estado
     }
       if(caso_seleccionado === "PS"){
-        min = Math.min(...tabla_de_interes[4])
-        max = Math.max(...tabla_de_interes[4])
-        posicion_max = tabla_de_interes[4].indexOf(max)
+        tabla = tabla_de_interes[4]
+        tabla_filtrada_ss = tabla.filter(value => value !== undefined)
+        min = Math.min(...tabla_filtrada)
+        max = Math.max(...tabla_filtrada)
+        posicion_max = tabla_filtrada.indexOf(max)
         if(valor_secundario > max && valor_secundario > min){
           T = extrapolacion(valor_secundario,tabla_de_interes[4][posicion_max-1],tabla_de_interes[4][posicion_max],
             tabla_de_interes[0][posicion_max-1],tabla_de_interes[0][posicion_max])
@@ -380,6 +427,7 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
         if(valor_secundario < min){
         estado = ["valor por debajo de la temperatura de saturacion:",min]
       }
+      return estado
       }
     return estado;
     }
@@ -468,6 +516,7 @@ function buscar_tablita_vapor_sat(presion,Indices_de_presiones,valor_secundario,
     if(caso_seleccionado === "PV"){
       console.log("QE")
     if(valor_secundario > max_V_p && valor_secundario > min_V_p){
+      consp
       T = interpolacion(Indices_de_presiones[i+1],presion,Indices_de_presiones[i],
         extrapolacion(valor_secundario,V_a[posicion_max_anterior_V_a-1],max_V_a,T_a[posicion_max_anterior_T_a-1],max_T_a),
         extrapolacion(valor_secundario,V_p[posicion_max_posterior_V_p-1],max_V_p,T_p[posicion_max_posterior_V_p-1],max_T_p))
@@ -650,6 +699,7 @@ let HEVAP = buscarEnColumna(Columna_1,Columna_HEVAP,valor);
 let UEVAP = buscarEnColumna(Columna_1,Columna_UEVAP,valor);
 let SEVAP = buscarEnColumna(Columna_1,Columna_SEVAP,valor);
 
+
 ///////////////////////////////////////Casos intracamapana de basados en T y P /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function estado_intracampana(valor,valor_secundario,caso_seleccionado){
@@ -666,7 +716,7 @@ function estado_intracampana(valor,valor_secundario,caso_seleccionado){
   }
   if(caso_seleccionado === "PH"){
     P = valor
-    T = buscarEnColumna(Columna_2,Columna_1,valor)
+    T = buscarEnColumna(Columna_1,Columna_2,valor)
     Calidad_result = calidad(valor_secundario,HILG,HIGL);
     H_result = valor_secundario;
     U_result = M_intermedia(Calidad_result,UILG,UIGL);
@@ -688,8 +738,8 @@ function estado_intracampana(valor,valor_secundario,caso_seleccionado){
     }
     if(caso_seleccionado === "PU"){
       P = valor
-      T = buscarEnColumna(Columna_2,Columna_1,valor)
-      Calidad_result = calidad(valor_secundario,HILG,HIGL);
+      T = buscarEnColumna(Columna_1,Columna_2,valor)
+      Calidad_result = calidad(valor_secundario,UILG,UIGL);
       H_result = M_intermedia(Calidad_result,HILG,HIGL);
       U_result = valor_secundario
       V_result = M_intermedia(Calidad_result,VILG,VIGL);
@@ -710,7 +760,7 @@ function estado_intracampana(valor,valor_secundario,caso_seleccionado){
     }
     if(caso_seleccionado === "PV"){
       P = valor
-      T = buscarEnColumna(Columna_2,Columna_1,valor)
+      T = buscarEnColumna(Columna_1,Columna_2,valor)
       Calidad_result = calidad(valor_secundario,VILG,VIGL);
       H_result = M_intermedia(Calidad_result,HILG,HIGL);
       U_result = M_intermedia(Calidad_result,UILG,UIGL);
@@ -732,7 +782,7 @@ function estado_intracampana(valor,valor_secundario,caso_seleccionado){
     }
     if(caso_seleccionado === "PS"){
       P = valor
-      T = buscarEnColumna(Columna_2,Columna_1,valor)
+      T = buscarEnColumna(Columna_1,Columna_2,valor)
       Calidad_result = calidad(valor_secundario,VILG,VIGL);
       H_result = M_intermedia(Calidad_result,HILG,HIGL);
       U_result = M_intermedia(Calidad_result,UILG,UIGL);
@@ -746,12 +796,11 @@ function estado_intracampana(valor,valor_secundario,caso_seleccionado){
 //  T P V H U S D
 function estado_final(caso_seleccionado,valor,valor_secundario){
     if(caso_seleccionado === "TH" || caso_seleccionado ===  "PH"){
-      if(valor_secundario < HILG || caso_seleccionado === "PH"){
-        Tabla_de_trabajo_para_calculos = "A7"
-        estado = "en proceso liquido coprimido"
+      if(valor_secundario < HILG && caso_seleccionado === "PH"){
+        estado =  buscar_tablita(valor,Indices_de_presiones_tabla_A_7,valor_secundario,caso_seleccionado,familias_A7)
       }
-      if(valor_secundario > HIGL || caso_seleccionado === "PH"){
-        estado = buscar_tablita_vapor_sat(valor,Indices_de_presiones_tabla_A_6,valor_secundario,caso_seleccionado)
+      if(valor_secundario > HIGL && caso_seleccionado === "PH"){
+        estado = buscar_tablita(valor,Indices_de_presiones_tabla_A_6,valor_secundario,caso_seleccionado,familias_A6)
       }
       if(valor_secundario > HILG &&  valor_secundario < HIGL){
       estado = estado_intracampana(valor,valor_secundario,caso_seleccionado)
@@ -760,12 +809,12 @@ function estado_final(caso_seleccionado,valor,valor_secundario){
     }
     if(caso_seleccionado === "TU" || caso_seleccionado === "PU" ){
     
-      if(valor_secundario < UILG || caso_seleccionado === "PU"){
-        Tabla_de_trabajo_para_calculos = "A7"
-        estado = "en proceso liquido coprimido"
+      if(valor_secundario < UILG && caso_seleccionado === "PU"){
+        estado =  buscar_tablita(valor,Indices_de_presiones_tabla_A_7,valor_secundario,caso_seleccionado,familias_A7)
       }
-      if(valor_secundario > UIGL || caso_seleccionado === "PU"){
-      estado = buscar_tablita_vapor_sat(valor,Indices_de_presiones_tabla_A_6,valor_secundario,caso_seleccionado)     
+      if(valor_secundario > UIGL && caso_seleccionado === "PU"){
+        console.log("nada")
+      estado = buscar_tablita(valor,Indices_de_presiones_tabla_A_6,valor_secundario,caso_seleccionado,familias_A6)     
       }
       if(valor_secundario > UILG && valor_secundario < UIGL){
       estado = estado_intracampana(valor,valor_secundario,caso_seleccionado)
@@ -773,12 +822,12 @@ function estado_final(caso_seleccionado,valor,valor_secundario){
       return estado
     }
     if(caso_seleccionado === "TV" || caso_seleccionado === "PV" ){
-      if(valor_secundario < VILG || caso_seleccionado === "PH"){
-        Tabla_de_trabajo_para_calculos = "A7"
-        estado = "en proceso liquido comprimido"
+      if(valor_secundario < VILG && caso_seleccionado === "PV"){
+        estado =  buscar_tablita(valor,Indices_de_presiones_tabla_A_7,valor_secundario,caso_seleccionado,familias_A7)
+        
       }
-      if(valor_secundario > VIGL || caso_seleccionado === "PH"){
-        estado = buscar_tablita_vapor_sat(valor,Indices_de_presiones_tabla_A_6,valor_secundario,caso_seleccionado)
+      if(valor_secundario > VIGL && caso_seleccionado === "PV"){
+        estado = buscar_tablita(valor,Indices_de_presiones_tabla_A_6,valor_secundario,caso_seleccionado,familias_A6)
       }
       if(valor_secundario > VILG && valor_secundario < VIGL){
       estado = estado_intracampana(valor,valor_secundario,caso_seleccionado)
@@ -786,11 +835,11 @@ function estado_final(caso_seleccionado,valor,valor_secundario){
       return estado
     }
     if(caso_seleccionado === "TS" || caso_seleccionado === "PS"){
-      if(valor_secundario < SILG || caso_seleccionado === "PS"){
-      estado = "En proceso"
+      if(valor_secundario < SILG && caso_seleccionado === "PS"){
+        estado =  buscar_tablita(valor,Indices_de_presiones_tabla_A_7,valor_secundario,caso_seleccionado,familias_A7)
       }
-      if(valor_secundario > SILG || caso_seleccionado === "PS"){
-      estado = buscar_tablita_vapor_sat(valor,Indices_de_presiones_tabla_A_6,valor_secundario,caso_seleccionado)
+      if(valor_secundario > SILG && caso_seleccionado === "PS"){
+      estado = buscar_tablita(valor,Indices_de_presiones_tabla_A_6,valor_secundario,caso_seleccionado,familias_A6)
       }
       if(valor_secundario > SILG && valor_secundario < SIGL){
       estado = estado_intracampana(valor,valor_secundario,caso_seleccionado)
@@ -801,6 +850,7 @@ function estado_final(caso_seleccionado,valor,valor_secundario){
   }
 
 estado_total = estado_final(caso_seleccionado,valor,valor_secundario)
+
 console.log("Tempertura[°C]:",estado_total[0])
 console.log("Presión [kPa]:",estado_total[1])
 console.log("Calidad:",estado_total[2])
@@ -808,7 +858,8 @@ console.log("Volumen [m^3/kg]:",estado_total[3])
 console.log("Energía interna [kJ/kg]:",estado_total[4])
 console.log("Entalpía[kJ/kg]:",estado_total[5])
 console.log("Entropía [KJ/Kg*K]:",estado_total[6])
-console.log("Tempertura[°C]:",estado_total[7])
+console.log("Densida [kg/m^3]",estado_total[7])
+//console.log(...estado_total)
 console.log(caso_seleccionado)
 //  T P C V U H S D
 

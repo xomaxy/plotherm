@@ -3,7 +3,6 @@ valor_secundario = 400
 caso_seleccionado = "PT"
 
 // Test github
-
 // cambios hechos por ángel
 
 /// Hay que aprender bien esto Angel para vernos bien pros

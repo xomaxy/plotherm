@@ -9,7 +9,7 @@ caso_seleccionado = "PT"
 /// Hay que aprender bien esto Angel para vernos bien pros
 //////// Cambio del 9/12/23 me gusta este sisrtema de versiones 
 ////// Voy a poner aqui las instrucciones de Git para que no se olviden 
-/////// git add.  /// es para agregar los archivos al mensaje 
+/////// git add .  /// es para agregar los archivos al mensaje 
 /////// git commit -m "mensaje de que cambios hice" ////
 /////// git push https://github.com/xomaxy/plotherm ////// subir cambios al repo 
 /////// git pull /////// Jalar los cambios 

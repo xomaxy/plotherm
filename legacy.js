@@ -1,6 +1,6 @@
-valor = 10000
-valor_secundario = 3500
-caso_seleccionado = "PH"
+valor = 10
+valor_secundario = 5000
+caso_seleccionado = "PS"
 
 // Test github
 
@@ -421,7 +421,7 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
     }
       if(caso_seleccionado === "PS"){
         tabla = tabla_de_interes[4]
-        tabla_filtrada_ss = tabla.filter(value => value !== undefined)
+        tabla_filtrada = tabla.filter(value => value !== undefined)
         min = Math.min(...tabla_filtrada)
         max = Math.max(...tabla_filtrada)
         posicion_max = tabla_filtrada.indexOf(max)

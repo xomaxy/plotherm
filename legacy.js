@@ -1,6 +1,6 @@
-valor = 10
-valor_secundario = 5000
-caso_seleccionado = "PS"
+valor = 13000
+valor_secundario = 0.0012164
+caso_seleccionado = "PV"
 
 // Test github
 
@@ -245,7 +245,7 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
   let estado = -1
   max_indice = Math.max(...Indices_de_presiones)
   min_indice = Math.min(...Indices_de_presiones)
-  if(caso_seleccionado != "PT"){
+  if(caso_seleccionado != "PT" || caso_seleccionado != "TP"){
   if(valor_secundario > HIGL || valor_secundario > UIGL || valor_secundario > SIGL || valor_secundario > VIGL){
     Calidad = 1
   }
@@ -253,13 +253,23 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
     Calidad = 0
   }
 }
-  if(caso_seleccionado === "PT"){
-    if(valor_secundario > T){
+  if(caso_seleccionado === "PT" || caso_seleccionado === "TP"){
+    if(caso_seleccionado === "PT"){
+      if(valor_secundario > T){
+        Calidad = 1
+      }
+      if(valor_secundario < T){
+        Calidad = 0
+      }
+  }
+  if(caso_seleccionado === "TP"){
+    if(valor_secundario > P){
       Calidad = 1
     }
-    if(valor_secundario < T){
+    if(valor_secundario < P){
       Calidad = 0
     }
+  }
     
   }
 
@@ -281,7 +291,7 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
     if (Indices_de_presiones[i] === presion) {
        tabla_de_interes = familias[i] 
        
-      if(caso_seleccionado === "PT"){
+      if(caso_seleccionado === "PT" || caso_seleccionado === "TP"){
         tabla = tabla_de_interes[0]
         tabla_filtrada = tabla.filter(value => value !== undefined)
         min = Math.min(...tabla_filtrada)
@@ -559,10 +569,10 @@ function buscar_tablita(presion,Indices_de_presiones,valor_secundario,caso_selec
     }
     if(valor_secundario > min_V_a && valor_secundario < max_V_a && valor_secundario > min_V_p && valor_secundario < max_V_p){
       if(valor_secundario > min_V_p && valor_secundario < max_V_p){
-        T_x = buscarEnColumna(T_p,V_p,valor_secundario)
-        U_x = buscarEnColumna(U_p,V_p,valor_secundario)
-        H_x = buscarEnColumna(H_p,V_p,valor_secundario)
-        S_x = buscarEnColumna(S_p,V_p,valor_secundario)
+        T_x = buscarEnColumna(V_p,T_p,valor_secundario)
+        U_x = buscarEnColumna(V_p,U_p,valor_secundario)
+        H_x = buscarEnColumna(V_p,H_p,valor_secundario)
+        S_x = buscarEnColumna(V_p,S_p,valor_secundario)
       }
       if(valor_secundario > max_V_p){
         T_x = extrapolacion(valor_secundario,V_p[posicion_max_posterior_V_p-1],max_V_p,T_p[posicion_max_posterior_T_p-1],max_T_p)
